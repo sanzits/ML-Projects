@@ -106,8 +106,8 @@ def create_stock_hist_data(st_dt,end_Dt):
 master_list= []
 
 
-st_dt = datetime(2023, 4, 30)
-end_Dt = datetime(2024, 6, 30)
+st_dt = datetime.today()-timedelta(days=400)
+end_Dt = datetime.today()
 
 for i in range(10):
     create_stock_hist_data(st_dt.strftime('%Y-%m-%d'),end_Dt.strftime('%Y-%m-%d'))
@@ -117,13 +117,13 @@ for i in range(10):
     st_dt = st_dt-timedelta(days=1)
     end_Dt = end_Dt-timedelta(days=1)
     
-none_count = 0
-for sublist in master_list:
+#none_count = 0
+#for sublist in master_list:
     
-    if sublist is None:
-        master_list.remove(sublist)
+#    if sublist is None:
+#        master_list.remove(sublist)
 
-master_list_nan = master_list
+master_list_nan = [row for row in master_list if row is not None]
 
 columns = ['tick', 'mvgAvg200', 'mvgAvg100','mvgAvg50','mvgAvg20','mvgAvg10','RSI_signal','FuturePrice','percived_today_price','Cut_off_date']
 df = pd.DataFrame(master_list_nan,columns=columns)
@@ -149,4 +149,10 @@ df['label_class'] = df.apply(lambda row: 1 if (row['FuturePrice'] - row['percive
 
 df_cleaned = df.dropna()
 
-df_cleaned.to_csv('/Users/sanchitsuman/Documents/Data/Stock_data.csv', index=False)    
+# Get today's date in 'yyyy-mm-dd' format
+today_date = datetime.today().strftime('%Y-%m-%d')
+
+# Define the filename with today's date appended
+filename = f'Stock_data_{today_date}.csv'
+
+df_cleaned.to_csv('/Users/sanchitsuman/Documents/Data/'+filename, index=False)
