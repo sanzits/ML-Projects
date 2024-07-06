@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>ROC Curve and Metrics</title>
+</head>
+<body>
+    <h1>ROC Curve and Model Performance Metrics</h1>
+    <img src="{{ url_for('static', filename='images/roc_curve.png') }}" alt="ROC Curve">
+    <h2>Metrics:</h2>
+    <ul>
+        <li>ROC AUC: {{ roc_auc }}</li>
+        <li>Precision: {{ precision }}</li>
+        <li>Recall: {{ recall }}</li>
+    </ul>
+    <a href="/">Go Back to Home</a>
+</body>
+</html>
