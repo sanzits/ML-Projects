@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Results Page</title>
+</head>
+<body>
+    <h1>Results</h1>
+    
+    <!-- Displaying the images -->
+    <h2>ROC Curve for Random Forest</h2>
+    <img src="{{ url_for('static', filename='images/' + roc_rf) }}" alt="Decoded Image">
+
+    <h2>Variables</h2>
+    <ul>
+        <li>Precision: {{ precision_rf }}</li>
+        <li>Recall: {{ recall_rf }}</li>
+        <li>ROC AUC: {{ roc_auc_rf }}</li>
+    </ul>
+
+    <h2>ROC Curve for parameterized Random Forest using grid search</h2>
+    <img src="{{ url_for('static', filename='images/' + roc_rf_hp) }}" alt="Decoded Image">
+    
+    <!-- Displaying the variables -->
+    <h2>Variables</h2>
+    <ul>
+        <li>Precision: {{ precision_rf_hp }}</li>
+        <li>Recall: {{ recall_rf_hp }}</li>
+        <li>ROC AUC: {{ roc_auc_rf_hp }}</li>
+    </ul>
+    
+    <a href="/">Back to Home</a>
+</body>
+</html>

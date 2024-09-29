@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Latest predictions</title>
+</head>
+<body>
+    <h1>Results</h1>
+    
+    <!-- Displaying the images -->
+    <h2>ROC Curve </h2>
+    <img src="data:image/png;base64,{{ roc }}" alt="ROC Curve 1">
+
+    <h2>Variables</h2>
+    <ul>
+        <li>Precision: {{ precision }}</li>
+        <li>Recall: {{ recall }}</li>
+        <li>ROC AUC: {{ roc_auc }}</li>
+    </ul>
+
+    <h2>Distribution of observations based on probabilty</h2>
+    <img src="data:image/png;base64,{{ scatter_plt }}" alt="ROC Curve 2">
+    
+    <!-- Displaying the variables -->
+    
+    <a href="/">Back to Home</a>
+</body>
+</html>
