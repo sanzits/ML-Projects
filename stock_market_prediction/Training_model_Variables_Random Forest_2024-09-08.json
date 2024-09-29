@@ -1,0 +1,8 @@
+{
+    "roc_curve_file": "/Users/sanchitsuman/documents/Data/Roc_Curve_Random Forest_2024-09-08.png",
+    "date_trained": "2024-09-08",
+    "model_type": "Random Forest",
+    "precision": 0.830945558739255,
+    "recall": 0.6131078224101479,
+    "roc_auc": 0.9136882139806249
+}
