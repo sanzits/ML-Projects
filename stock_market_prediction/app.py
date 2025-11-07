@@ -5,8 +5,10 @@ from sklearn.model_selection import train_test_split
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.metrics import roc_curve, roc_auc_score, precision_score, recall_score
 import matplotlib
-matplotlib.use("Qt5Agg")
+#matplotlib.use("Qt5Agg")
+matplotlib.use('Agg')
 import matplotlib.pyplot as plt
+import joblib
 
 app = Flask(__name__)
 
@@ -51,6 +53,8 @@ def roc_curve_view():
      # Compute additional metrics
     precision = precision_score(y_test, y_test_pred)
     recall = recall_score(y_test, y_test_pred)
+
+    joblib.dump(rf_classifier, '/Users/sanchitsuman/Documents/Data/rf_classifier.pkl')
 
     # Pass metrics to the template
     return render_template('roc_curve.html', roc_auc=roc_auc, precision=precision, recall=recall)

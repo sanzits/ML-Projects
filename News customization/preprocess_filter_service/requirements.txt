@@ -1,0 +1,7 @@
+flask
+google-cloud-storage
+pandas
+sentence-transformers
+torch
+transformers
+gunicorn

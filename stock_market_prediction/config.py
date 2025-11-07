@@ -1,0 +1,1 @@
+polygonAPIkey = 'yXiUk8iMbEFVGQdTXs_0uFGUxFFfvklZ'
