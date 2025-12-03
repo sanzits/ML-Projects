@@ -1,0 +1,25 @@
+{
+    "input.jpeg": {
+        "full_path": "/Users/sanchitsuman/Documents/Face recognition/Input/input.jpeg",
+        "cropped_faces": [
+            "/Users/sanchitsuman/vcs/github.com/drcscodes/ML-Projects/Face Detection/faces/cropped_face_0_0.png",
+            "/Users/sanchitsuman/vcs/github.com/drcscodes/ML-Projects/Face Detection/faces/cropped_face_0_1.png"
+        ]
+    },
+    "input3.jpeg": {
+        "full_path": "/Users/sanchitsuman/Documents/Face recognition/Input/input3.jpeg",
+        "cropped_faces": [
+            "/Users/sanchitsuman/vcs/github.com/drcscodes/ML-Projects/Face Detection/faces/cropped_face_1_0.png",
+            "/Users/sanchitsuman/vcs/github.com/drcscodes/ML-Projects/Face Detection/faces/cropped_face_1_1.png",
+            "/Users/sanchitsuman/vcs/github.com/drcscodes/ML-Projects/Face Detection/faces/cropped_face_1_2.png",
+            "/Users/sanchitsuman/vcs/github.com/drcscodes/ML-Projects/Face Detection/faces/cropped_face_1_3.png"
+        ]
+    },
+    "input2.jpeg": {
+        "full_path": "/Users/sanchitsuman/Documents/Face recognition/Input/input2.jpeg",
+        "cropped_faces": [
+            "/Users/sanchitsuman/vcs/github.com/drcscodes/ML-Projects/Face Detection/faces/cropped_face_2_0.png",
+            "/Users/sanchitsuman/vcs/github.com/drcscodes/ML-Projects/Face Detection/faces/cropped_face_2_1.png"
+        ]
+    }
+}
