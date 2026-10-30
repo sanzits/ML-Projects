@@ -51,7 +51,7 @@ def build_markdown(run, history):
          f"({run['sample_size'] / run['total_rows']:.2%}); click rate {run['click_rate']:.4f}",
          f"- **Test split:** 30% ({res[0]['n_test']:,} rows); bootstrap resamples: {run['n_boot']}",
          f"- **Runtime:** {run['runtime_sec']:.0f}s", "",
-         "## Results (this run)", "",
+         "## Results (this run)", "", "![SNIPS chart](chart.png)", "",
          "| Rank | Policy | Type | SNIPS | 95% CI | IPS | ESS | Matched rows |",
          "|---|---|---|---|---|---|---|---|"]
     by = {r["policy"]: r for r in res}
@@ -127,7 +127,10 @@ def to_html(md):
         if in_list:
             out.append("</ul>")
             in_list = False
-        if line.startswith("#"):
+        m = re.match(r"!\[(.*?)\]\((.*?)\)", line)
+        if m:
+            out.append(f"<p><img src='{m.group(2)}' alt='{m.group(1)}' style='max-width:100%'></p>")
+        elif line.startswith("#"):
             n = len(line) - len(line.lstrip("#"))
             out.append(f"<h{n}>{e[n:].strip()}</h{n}>")
         elif line.strip():
@@ -137,3 +140,40 @@ def to_html(md):
     if in_list:
         out.append("</ul>")
     return "<html><body style='font-family:sans-serif'>" + "\n".join(out) + "</body></html>"
+
+
+def make_chart(run, history, path):
+    """PNG: SNIPS with 95% CI for this run (left) and SNIPS per run across history (right)."""
+    import matplotlib
+    matplotlib.use("Agg")
+    import matplotlib.pyplot as plt
+
+    res = run["results"]
+    names = [r["policy"] for r in res]
+    colors = ["#7f7f7f" if KIND.get(p) == "A/B fixed" else "#1f77b4" for p in names]
+    fig, (a1, a2) = plt.subplots(1, 2, figsize=(12, 4.5), gridspec_kw={"width_ratios": [1, 1.3]})
+    snips = [r["snips"] for r in res]
+    err = [[r["snips"] - r["ci_low"] for r in res], [r["ci_high"] - r["snips"] for r in res]]
+    a1.bar(names, snips, yerr=err, capsize=5, color=colors)
+    for i, r in enumerate(res):
+        a1.text(i, r["ci_high"], f"{r['snips']:.4f}\nESS {r['ess']:.0f}", ha="center",
+                va="bottom", fontsize=8)
+    a1.set_ylabel("SNIPS policy value (95% bootstrap CI)")
+    a1.set_title(f"This run (seed {run['seed']})\ngrey = A/B fixed, blue = contextual/RL")
+    a1.set_ylim(0, max(r["ci_high"] for r in res) * 1.25)
+    a1.grid(axis="y", alpha=0.3)
+    a1.tick_params(axis="x", labelsize=8)
+
+    runs = history + [run]
+    for p in names:
+        ys = [r_["snips"] for h in runs for r_ in h["results"] if r_["policy"] == p]
+        a2.plot(range(1, len(ys) + 1), ys, marker="o", label=p)
+    a2.set_xlabel("Run #")
+    a2.set_ylabel("SNIPS")
+    a2.set_title("SNIPS across runs (fresh random sample each)")
+    a2.set_xticks(range(1, len(runs) + 1))
+    a2.grid(alpha=0.3)
+    a2.legend(fontsize=8)
+    fig.tight_layout()
+    fig.savefig(path, dpi=130)
+    plt.close(fig)

@@ -52,6 +52,8 @@ def main():
     os.makedirs(out, exist_ok=True)
     with open(os.path.join(out, "run.json"), "w") as f:
         json.dump(run, f, indent=2)
+    chart = os.path.join(out, "chart.png")
+    report.make_chart(run, history, chart)
     with open(os.path.join(out, "report.md"), "w") as f:
         f.write(md)
     html_body = report.to_html(md)
@@ -64,7 +66,7 @@ def main():
         print("--no-email: skipping email")
     else:
         send_report(f"OBD experiment report {run_id}", md, html_body,
-                    [os.path.join(out, "run.json")])
+                    [os.path.join(out, "run.json")], inline_image=chart)
         print(f"emailed to {os.environ['EMAIL_TO']}")
 
 

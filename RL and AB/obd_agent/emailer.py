@@ -15,7 +15,7 @@ def load_env(path):
                 os.environ.setdefault(k.strip(), v.strip().strip('"').strip("'"))
 
 
-def send_report(subject, markdown, html_body, attachments=()):
+def send_report(subject, markdown, html_body, attachments=(), inline_image=None):
     missing = [k for k in REQUIRED if not os.environ.get(k)]
     if missing:
         raise RuntimeError(f"Missing SMTP settings: {', '.join(missing)} (see .env.example)")
@@ -27,7 +27,12 @@ def send_report(subject, markdown, html_body, attachments=()):
     msg["From"] = os.environ.get("EMAIL_FROM", user)
     msg["To"] = os.environ["EMAIL_TO"]
     msg.set_content(markdown)
+    if inline_image:
+        html_body = html_body.replace(f"src='{os.path.basename(inline_image)}'", "src='cid:chart'")
     msg.add_alternative(html_body, subtype="html")
+    if inline_image:
+        with open(inline_image, "rb") as f:
+            msg.get_payload()[1].add_related(f.read(), "image", "png", cid="<chart>")
     for path in attachments:
         with open(path, "rb") as f:
             msg.add_attachment(f.read(), maintype="application", subtype="octet-stream",

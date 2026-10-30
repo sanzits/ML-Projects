@@ -27,7 +27,8 @@ takes ~1 minute after that. Runs are manual only (no scheduler).
 
 ## Output
 `runs/<run_id>/` holds `run.json` (seed, sample size, per-policy metrics), `report.md` and
-`report.html`. Every new report includes mean/std/min/max SNIPS across earlier runs, a
+`report.html` and `chart.png` (SNIPS with CIs for this run, plus SNIPS across runs); the
+chart is embedded in the email. Every new report includes mean/std/min/max SNIPS across earlier runs, a
 z-score of this run vs. history, and each run's ranking, so you can see whether the
 winner is stable or just sampling noise. `runs/` and `.env` are gitignored.
 

@@ -43,4 +43,6 @@ def test_experiment_and_report(tmp_path):
     assert "first one" in md and "seed" in md.lower()
     md2 = report.build_markdown(run, [dict(run, run_id="r0", seed=0)])
     assert "Prev mean" in md2
-    assert "<table" in report.to_html(md2)
+    assert "<table" in report.to_html(md2) and "<img" in report.to_html(md2)
+    report.make_chart(run, [dict(run, run_id="r0", seed=0)], str(tmp_path / "chart.png"))
+    assert (tmp_path / "chart.png").stat().st_size > 1000
