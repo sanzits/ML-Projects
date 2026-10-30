@@ -39,7 +39,7 @@ def main():
     print(f"[{run_id}] drawing {a.sample_size:,} rows (seed {seed}) from {a.data}")
     df, total = sampler.draw_sample(a.data, a.sample_size, seed,
                                     cache_path=os.path.join(a.runs_dir, ".row_count.json"))
-    print(f"sample {df.shape}; running experiment")
+    print(f"sample {df.shape}; split 70/30 train/test, evaluating on the test split")
     results = run_experiment(df, seed, a.n_boot)
 
     run = dict(run_id=run_id, seed=seed, sample_size=len(df), total_rows=total,

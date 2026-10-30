@@ -34,7 +34,21 @@ def evaluate(name, click, w, pb, notes, seed, n_boot=N_BOOT):
                 n_matched=int((w > 0).sum()), notes=notes)
 
 
-def run_experiment(df, seed, n_boot=N_BOOT):
+DESCRIPTIONS = {
+    "uniform": "A/B fixed baseline: shows every item with equal probability, ignoring the user.",
+    "popularity": "A/B fixed arm: always shows the single item with the best click rate in training data.",
+    "linucb": "Contextual/RL: LinUCB, a per-item linear model of user features that picks the item with the highest predicted click value.",
+    "logistic_ctr": "Contextual/RL: logistic-regression click model on user + item features; picks the item with the highest predicted click probability.",
+}
+
+
+def run_experiment(df, seed, n_boot=N_BOOT, log=print):
+    step = [0]
+
+    def announce(name):
+        step[0] += 1
+        log(f"[{step[0]}/4] Evaluating policy: {name} -- {DESCRIPTIONS[name]}")
+
     tr, te = train_test_split(df, test_size=0.3, random_state=seed)
     tr, te = tr.reset_index(drop=True), te.reset_index(drop=True)
     items = np.sort(df.item_id.unique())
@@ -49,9 +63,11 @@ def run_experiment(df, seed, n_boot=N_BOOT):
     a_tr = tr.item_id.map(item_idx).values
     results = []
 
+    announce("uniform")
     results.append(evaluate("uniform", click_te, np.full(len(te), 1.0 / n_items), pb_te,
                             "pi_e = 1/n_items", seed, n_boot))
 
+    announce("popularity")
     best = tr.groupby("item_id").click.mean().idxmax()
     results.append(evaluate("popularity", click_te, (te.item_id.values == best).astype(float),
                             pb_te, f"always item {best} (best train CTR)", seed, n_boot))
@@ -64,6 +80,7 @@ def run_experiment(df, seed, n_boot=N_BOOT):
 
     X_tr, X_te = context(tr), context(te)
 
+    announce("linucb")
     # LinUCB (disjoint): IPS-weighted ridge per item, greedy (alpha=0) at test.
     d = X_tr.shape[1] + 1
     lam = 1.0
@@ -84,6 +101,7 @@ def run_experiment(df, seed, n_boot=N_BOOT):
                             "disjoint LinUCB (greedy, alpha=0), IPS weights clipped at 50, "
                             "greedy deterministic pi_e", seed, n_boot))
 
+    announce("logistic_ctr")
     # Logistic CTR: P(click | context, item), greedy over items.
     aff_s_tr, aff_s_te = sc.transform(tr[aff_cols]), sc.transform(te[aff_cols])
 
