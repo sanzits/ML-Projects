@@ -25,6 +25,14 @@ python run_agent.py --sample-size 200000 --n-boot 500
 The first run scans `all.csv` once to count rows (cached in `runs/.row_count.json`); a run
 takes ~1 minute after that. Runs are manual only (no scheduler).
 
+## Dashboard
+```
+python dashboard.py --data "/path/to/all.csv"     # then open http://127.0.0.1:8765
+```
+Shows the SNIPS-across-runs graph, the latest run's table and all runs, with a
+**Run new experiment** button (optional email checkbox) and a live run log. The page
+refreshes itself when a run finishes.
+
 ## Output
 `runs/<run_id>/` holds `run.json` (seed, sample size, per-policy metrics), `report.md` and
 `report.html` and `chart.png` (SNIPS with CIs for this run, plus SNIPS across runs); the
