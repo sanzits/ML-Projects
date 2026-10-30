@@ -52,7 +52,7 @@ def build_markdown(run, history):
          f"- **Test split:** 30% ({res[0]['n_test']:,} rows); bootstrap resamples: {run['n_boot']}",
          f"- **Runtime:** {run['runtime_sec']:.0f}s", "",
          "## Results (this run)", "", "![SNIPS chart](chart.png)", "",
-         "| Rank | Policy | Type | SNIPS | 95% CI | IPS | ESS |",
+         "| Rank | Policy | Type | Policy value (SNIPS) | 95% CI | IPS | ESS |",
          "|---|---|---|---|---|---|---|"]
     by = {r["policy"]: r for r in res}
     for i, p in enumerate(ranking(res), 1):
@@ -64,7 +64,7 @@ def build_markdown(run, history):
           "- **Policy / Type:** the strategy being evaluated. 'A/B fixed' policies ignore the "
           "user (uniform random, or always the most popular item); 'contextual/RL' policies "
           "pick an item per user using their features.",
-          "- **SNIPS:** Self-Normalized Inverse Propensity Scoring, the estimated click rate "
+          "- **Policy value (SNIPS):** Self-Normalized Inverse Propensity Scoring, the estimated click rate "
           "the policy would achieve. Higher is better; the ranking is by this column.",
           "- **95% CI:** bootstrap confidence interval for SNIPS. Overlapping intervals mean "
           "the policies can't be told apart.",
