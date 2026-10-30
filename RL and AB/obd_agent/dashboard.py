@@ -27,6 +27,7 @@ table{border-collapse:collapse}td,th{border:1px solid #999;padding:4px 8px}
 button{padding:8px 14px;font-size:14px}pre{background:#111;color:#ddd;padding:10px;
 max-height:260px;overflow:auto;font-size:12px}</style></head><body>
 <h2>OBD A/B vs RL: SNIPS across runs</h2>
+<p><a href="https://github.com/sanzits/ML-Projects/tree/sanzits-obd-agent-pipeline/RL%20and%20AB/obd_agent" target="_blank">Git repo: sanzits/ML-Projects</a></p>
 <button id="run" onclick="start()">Run new experiment</button>
 <label><input type="checkbox" id="email"> email the report</label>
 <span id="status"></span>
