@@ -52,14 +52,14 @@ def build_markdown(run, history):
          f"- **Test split:** 30% ({res[0]['n_test']:,} rows); bootstrap resamples: {run['n_boot']}",
          f"- **Runtime:** {run['runtime_sec']:.0f}s", "",
          "## Results (this run)", "", "![SNIPS chart](chart.png)", "",
-         "| Rank | Policy | Type | SNIPS | 95% CI | IPS | ESS | Matched rows |",
-         "|---|---|---|---|---|---|---|---|"]
+         "| Rank | Policy | Type | SNIPS | 95% CI | IPS | ESS |",
+         "|---|---|---|---|---|---|---|"]
     by = {r["policy"]: r for r in res}
     for i, p in enumerate(ranking(res), 1):
         r = by[p]
         L.append(f"| {i} | {p} | {KIND.get(p, '')} | {r['snips']:.5f} | "
                  f"[{r['ci_low']:.5f}, {r['ci_high']:.5f}] | {r['ips']:.5f} | "
-                 f"{r['ess']:.1f} | {r['n_matched']} |")
+                 f"{r['ess']:.1f} |")
     L += ["", "### What the columns mean", "",
           "- **Policy / Type:** the strategy being evaluated. 'A/B fixed' policies ignore the "
           "user (uniform random, or always the most popular item); 'contextual/RL' policies "
@@ -71,9 +71,7 @@ def build_markdown(run, history):
           "- **IPS:** plain Inverse Propensity Scoring estimate (not self-normalized); "
           "noisier than SNIPS, shown as a cross-check.",
           "- **ESS:** effective sample size, i.e. how many logged rows effectively "
-          "contribute after weighting. Low ESS (roughly under 100) means a noisy estimate.",
-          "- **Matched rows:** test rows where the policy's chosen item equals the logged "
-          "item, the only rows that carry weight for deterministic policies.", ""]
+          "contribute after weighting. Low ESS (roughly under 100) means a noisy estimate.", ""]
     for r in res:
         L.append(f"- `{r['policy']}`: {r['notes']}")
 
