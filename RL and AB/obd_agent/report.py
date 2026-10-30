@@ -60,14 +60,20 @@ def build_markdown(run, history):
         L.append(f"| {i} | {p} | {KIND.get(p, '')} | {r['snips']:.5f} | "
                  f"[{r['ci_low']:.5f}, {r['ci_high']:.5f}] | {r['ips']:.5f} | "
                  f"{r['ess']:.1f} | {r['n_matched']} |")
-    L += ["", "**Reading:** " + (
-        "all pairwise 95% CIs overlap, so no policy is distinguishable from another in this run."
-        if overlap(res) else
-        "some CIs do not overlap; see table for which policies separate."), ""]
-    low = [r["policy"] for r in res if r["ess"] < 100]
-    if low:
-        L += ["**Caution:** effective sample size < 100 for " + ", ".join(low) +
-              " — their estimates are very noisy even if the CI looks narrow.", ""]
+    L += ["", "### What the columns mean", "",
+          "- **Policy / Type:** the strategy being evaluated. "A/B fixed" policies ignore the "
+          "user (uniform random, or always the most popular item); "contextual/RL" policies "
+          "pick an item per user using their features.",
+          "- **SNIPS:** Self-Normalized Inverse Propensity Scoring, the estimated click rate "
+          "the policy would achieve. Higher is better; the ranking is by this column.",
+          "- **95% CI:** bootstrap confidence interval for SNIPS. Overlapping intervals mean "
+          "the policies can't be told apart.",
+          "- **IPS:** plain Inverse Propensity Scoring estimate (not self-normalized); "
+          "noisier than SNIPS, shown as a cross-check.",
+          "- **ESS:** effective sample size, i.e. how many logged rows effectively "
+          "contribute after weighting. Low ESS (roughly under 100) means a noisy estimate.",
+          "- **Matched rows:** test rows where the policy's chosen item equals the logged "
+          "item, the only rows that carry weight for deterministic policies.", ""]
     for r in res:
         L.append(f"- `{r['policy']}`: {r['notes']}")
 
