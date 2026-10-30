@@ -61,8 +61,8 @@ def build_markdown(run, history):
                  f"[{r['ci_low']:.5f}, {r['ci_high']:.5f}] | {r['ips']:.5f} | "
                  f"{r['ess']:.1f} | {r['n_matched']} |")
     L += ["", "### What the columns mean", "",
-          "- **Policy / Type:** the strategy being evaluated. "A/B fixed" policies ignore the "
-          "user (uniform random, or always the most popular item); "contextual/RL" policies "
+          "- **Policy / Type:** the strategy being evaluated. 'A/B fixed' policies ignore the "
+          "user (uniform random, or always the most popular item); 'contextual/RL' policies "
           "pick an item per user using their features.",
           "- **SNIPS:** Self-Normalized Inverse Propensity Scoring, the estimated click rate "
           "the policy would achieve. Higher is better; the ranking is by this column.",
